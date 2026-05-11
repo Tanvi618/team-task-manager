@@ -9,28 +9,29 @@ const taskRoutes = require("./routes/taskRoutes");
 
 const app = express();
 
+/* ---------------- MIDDLEWARE ---------------- */
 app.use(cors());
 app.use(express.json());
 
-// TEST ROUTE (must work)
-app.get("/", (req, res) => {
-  res.status(200).send("Backend is running");
-});
-
-// ROUTES
+/* ---------------- ROUTES ---------------- */
 app.use("/api/users", userRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/tasks", taskRoutes);
 
-// PORT (Railway requires this)
+/* ---------------- HEALTH CHECK ---------------- */
+app.get("/", (req, res) => {
+  res.status(200).send("Backend is running 🚀");
+});
+
+/* ---------------- SERVER START (RAILWAY SAFE) ---------------- */
 const PORT = process.env.PORT;
 
-// START SERVER FIRST (IMPORTANT FOR RAILWAY)
+// Start server FIRST (important for Railway health check)
 app.listen(PORT, "0.0.0.0", () => {
   console.log("Server running on port", PORT);
 });
 
-// CONNECT DB AFTER SERVER START (DO NOT BLOCK APP)
+/* ---------------- DATABASE CONNECTION ---------------- */
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log("MongoDB Connected");
@@ -38,3 +39,12 @@ mongoose.connect(process.env.MONGO_URI)
   .catch((err) => {
     console.log("MongoDB Error:", err);
   });
+
+/* ---------------- SAFETY (PREVENT SILENT CRASH) ---------------- */
+process.on("uncaughtException", (err) => {
+  console.log("Uncaught Exception:", err);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.log("Unhandled Rejection:", err);
+});
