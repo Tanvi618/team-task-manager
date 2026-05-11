@@ -9,28 +9,28 @@ const taskRoutes = require("./routes/taskRoutes");
 
 const app = express();
 
-
+/* ---------------- MIDDLEWARE ---------------- */
 app.use(cors({ origin: "*" }));
 app.use(express.json());
 
-
+/* ---------------- ROUTES ---------------- */
 app.use("/api/users", userRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/tasks", taskRoutes);
 
-
+/* ---------------- ROOT TEST ---------------- */
 app.get("/", (req, res) => {
-  res.status(200).send("Backend is running");
+  res.status(200).send("Backend is running 🚀");
 });
 
-
+/* ---------------- START SERVER FIRST ---------------- */
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-
+/* ---------------- CONNECT DATABASE AFTER ---------------- */
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
