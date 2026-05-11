@@ -20,25 +20,18 @@ app.use("/api/tasks", taskRoutes);
 
 /* ---------------- HEALTH CHECK ---------------- */
 app.get("/", (req, res) => {
-  res.status(200).send("Backend is running 🚀");
+  res.status(200).send("Backend is running");
 });
 
-/* ---------------- SERVER START (RAILWAY SAFE) ---------------- */
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8080;
 
-// Start server FIRST (important for Railway health check)
 app.listen(PORT, "0.0.0.0", () => {
   console.log("Server running on port", PORT);
-});
 
-/* ---------------- DATABASE CONNECTION ---------------- */
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("MongoDB Connected");
-  })
-  .catch((err) => {
-    console.log("MongoDB Error:", err);
-  });
+  mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("MongoDB Connected"))
+    .catch(err => console.log("MongoDB Error:", err));
+});
 
 /* ---------------- SAFETY (PREVENT SILENT CRASH) ---------------- */
 process.on("uncaughtException", (err) => {
