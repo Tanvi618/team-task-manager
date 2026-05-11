@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import Signup from "./pages/signup";
 import Dashboard from "./pages/Dashboard";
 
 function App() {
