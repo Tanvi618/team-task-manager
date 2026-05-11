@@ -9,25 +9,24 @@ const taskRoutes = require("./routes/taskRoutes");
 
 const app = express();
 
-/* ---------------- MIDDLEWARE ---------------- */
+
 app.use(cors({
-  origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: "*"
 }));
 app.use(express.json());
 
-/* ---------------- HEALTH CHECK ROUTE ---------------- */
+
 app.get("/", (req, res) => {
-  res.status(200).send("Backend is running 🚀");
+  res.status(200).send("Backend is running");
 });
 
-/* ---------------- ROUTES ---------------- */
+
 app.use("/api/users", userRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/tasks", taskRoutes);
 
-/* ---------------- DATABASE + SERVER START ---------------- */
-const PORT = process.env.PORT;
+
+const PORT = process.env.PORT || 8080;
 
 mongoose
   .connect(process.env.MONGO_URI)
